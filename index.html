@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✈️ Travel Planner - Discover Your Next Adventure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            scroll-behavior: smooth;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #667eea;
+        }
+
+        .favorites-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .favorites-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .favorites-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="80" r="2.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 2rem;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+            min-width: 300px;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+        }
+
+        .search-btn, .filter-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover, .filter-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn {
+            background: #28a745;
+        }
+
+        .filter-btn:hover {
+            background: #218838;
+        }
+
+        /* Filters */
+        .filters {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filters.active {
+            display: flex;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .filter-group select {
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        /* Destination Grid */
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .destination-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="80" r="2.5" fill="rgba(255,255,255,0.1)"/></svg>');
+        }
+
+        .favorite-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .favorite-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.active {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .card-location {
+            color: #666;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .view-details-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .view-details-btn:hover {
+            background: #5a6fd8;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            margin: 2rem;
+            animation: slideInUp 0.3s ease;
+        }
+
+        .modal-header {
+            position: relative;
+            height: 300px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .modal-location {
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .travel-tips {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+
+        .travel-tips h4 {
+            color: #495057;
+            margin-bottom: 1rem;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .tips-list li:before {
+            content: "💡";
+            position: absolute;
+            left: 0;
+        }
+
+        /* Favorites Section */
+        .favorites-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .favorites-title {
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .empty-favorites {
+            text-align: center;
+            color: #666;
+            padding: 3rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .search-input {
+                min-width: 100%;
+            }
+
+            .destinations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                max-height: 95vh;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .hero {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <a href="#" class="logo">✈️ TravelPlanner</a>
+            <ul class="nav-menu">
+                <li><a href="#destinations">Destinations</a></li>
+                <li><a href="#favorites">My Favorites</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="favorites-btn" onclick="scrollToFavorites()">
+                ❤️ Favorites
+                <span class="favorites-count" id="favoritesCount">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Next Adventure</h1>
+            <p>Explore amazing destinations around the world and plan your perfect trip with our comprehensive travel guide.</p>
+            
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search destinations, cities, or countries...">
+                    <button class="search-btn" onclick="searchDestinations()">🔍 Search</button>
+                    <button class="filter-btn" onclick="toggleFilters()">🎛️ Filters</button>
+                </div>
+                
+                <div class="filters" id="filters">
+                    <div class="filter-group">
+                        <label>Region</label>
+                        <select id="regionFilter">
+                            <option value="">All Regions</option>
+                            <option value="Europe">Europe</option>
+                            <option value="Asia">Asia</option>
+                            <option value="Americas">Americas</option>
+                            <option value="Africa">Africa</option>
+                            <option value="Oceania">Oceania</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Budget</label>
+                        <select id="budgetFilter">
+                            <option value="">Any Budget</option>
+                            <option value="budget">Budget ($0-$50/day)</option>
+                            <option value="mid">Mid-range ($50-$150/day)</option>
+                            <option value="luxury">Luxury ($150+/day)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Type</label>
+                        <select id="typeFilter">
+                            <option value="">All Types</option>
+                            <option value="beach">Beach</option>
+                            <option value="mountain">Mountain</option>
+                            <option value="city">City</option>
+                            <option value="cultural">Cultural</option>
+                            <option value="adventure">Adventure</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section id="destinations">
+            <h2 class="section-title">Popular Destinations</h2>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Searching for amazing destinations...</p>
+            </div>
+            
+            <div class="destinations-grid" id="destinationsGrid">
+                <!-- Destination cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="favorites" class="favorites-section">
+            <h2 class="favorites-title">My Favorite Destinations</h2>
+            <div id="favoritesContainer">
+                <div class="empty-favorites">
+                    <p>❤️ No favorites yet! Start exploring and save your dream destinations.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="destinationModal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalHeader">
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+                <span id="modalIcon">🏝️</span>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modalTitle">Destination Name</h2>
+                <p class="modal-location" id="modalLocation">📍 Location</p>
+                <p id="modalDescription">Detailed description...</p>
+                
+                <div class="travel-tips">
+                    <h4>💡 Travel Tips</h4>
+                    <ul class="tips-list" id="modalTips">
+                        <!-- Tips will be populated by JavaScript -->
+                    </ul>
+                </div>
+                
+                <div class="card-footer">
+                    <span class="price" id="modalPrice">$0/day</span>
+                    <button class="favorite-btn" id="modalFavoriteBtn" onclick="toggleFavoriteFromModal()">
+                        ❤️
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample destination data
+        const destinations = [
+            {
+                id: 1,
+                name: "Santorini",
+                location: "Greece, Europe",
+                region: "Europe",
+                description: "A stunning Greek island known for its white-washed buildings, blue domes, and breathtaking sunsets over the Aegean Sea.",
+                price: 120,
+                budget: "mid",
+                type: "beach",
+                icon: "🏝️",
+                tags: ["Romantic", "Photography", "Sunset Views"],
+                tips: [
+                    "Visit during shoulder season (April-May, September-October) for better prices",
+                    "Book sunset dinner reservations in advance",
+                    "Wear comfortable shoes for walking on cobblestone streets",
+                    "Try local wines and traditional Greek cuisine"
+                ]
+            },
+            {
+                id: 2,
+                name: "Tokyo",
+                location: "Japan, Asia",
+                region: "Asia",
+                description: "A vibrant metropolis blending ultra-modern technology with traditional culture, offering incredible food, shopping, and experiences.",
+                price: 180,
+                budget: "luxury",
+                type: "city",
+                icon: "🏙️",
+                tags: ["Technology", "Food", "Culture"],
+                tips: [
+                    "Get a JR Pass for unlimited train travel",
+                    "Learn basic Japanese phrases",
+                    "Try street food in Shibuya and Harajuku",
+                    "Visit temples early in the morning for peaceful experience"
+                ]
+            },
+            {
+                id: 3,
+                name: "Machu Picchu",
+                location: "Peru, South America",
+                region: "Americas",
+                description: "An ancient Incan citadel set high in the Andes Mountains, offering spectacular views and rich historical significance.",
+                price: 80,
+                budget: "mid",
+                type: "mountain",
+                icon: "⛰️",
+                tags: ["History", "Hiking", "Adventure"],
+                tips: [
+                    "Book tickets well in advance (up to 4 months)",
+                    "Acclimatize in Cusco for 2-3 days before visiting",
+                    "Bring layers - weather can change quickly",
+                    "Consider the Inca Trail for a multi-day adventure"
+                ]
+            },
+            {
+                id: 4,
+                name: "Bali",
+                location: "Indonesia, Asia",
+                region: "Asia",
+                description: "A tropical paradise with beautiful beaches, lush rice terraces, ancient temples, and vibrant cultural experiences.",
+                price: 45,
+                budget: "budget",
+                type: "beach",
+                icon: "🌴",
+                tags: ["Beaches", "Temples", "Yoga"],
+                tips: [
+                    "Rent a scooter to explore the island",
+                    "Visit rice terraces in Jatiluwih or Tegallalang",
+                    "Try traditional Balinese massage and spa treatments",
+                    "Respect local customs when visiting temples"
+                ]
+            },
+            {
+                id: 5,
+                name: "Paris",
+                location: "France, Europe",
+                region: "Europe",
+                description: "The City of Light, famous for its art, fashion, gastronomy, and iconic landmarks like the Eiffel Tower and Louvre Museum.",
+                price: 150,
+                budget: "mid",
+                type: "city",
+                icon: "🗼",
+                tags: ["Art", "Fashion", "Romance"],
+                tips: [
+                    "Visit museums on first Sunday mornings for free entry",
+                    "Learn basic French phrases",
+                    "Walk along the Seine River at sunset",
+                    "Try authentic French pastries from local boulangeries"
+                ]
+            },
+            {
+                id: 6,
+                name: "Safari Kenya",
+                location: "Kenya, Africa",
+                region: "Africa",
+                description: "Experience incredible wildlife in their natural habitat, witness the Great Migration, and enjoy authentic African culture.",
+                price: 200,
+                budget: "luxury",
+                type: "adventure",
+                icon: "🦁",
+                tags: ["Wildlife", "Safari", "Photography"],
+                tips: [
+                    "Visit during dry season (June-October) for best wildlife viewing",
+                    "Bring binoculars and a good camera with zoom lens",
+                    "Pack neutral-colored clothing",
+                    "Book with reputable safari operators"
+                ]
+            },
+            {
+                id: 7,
+                name: "Iceland",
+                location: "Iceland, Europe",
+                region: "Europe",
+                description: "Land of fire and ice, featuring dramatic landscapes, geysers, waterfalls, Northern Lights, and geothermal hot springs.",
+                price: 160,
+                budget: "mid",
+                type: "adventure",
+                icon: "🌋",
+                tags: ["Northern Lights", "Geysers", "Adventure"],
+                tips: [
+                    "Rent a 4WD vehicle for Ring Road trip",
+                    "Visit Blue Lagoon but book in advance",
+                    "Pack warm, waterproof clothing",
+                    "Chase Northern Lights between September-March"
+                ]
+            },
+            {
+                id: 8,
+                name: "New York City",
+                location: "USA, North America",
+                region: "Americas",
+                description: "The city that never sleeps, offering world-class museums, Broadway shows, diverse neighborhoods, and iconic skyline views.",
+                price: 200,
+                budget: "luxury",
+                type: "city",
+                icon: "🏢",
+                tags: ["Museums", "Broadway", "Shopping"],
+                tips: [
+                    "Get a MetroCard for easy subway travel",
+                    "Book Broadway shows in advance",
+                    "Visit Central Park and Brooklyn Bridge",
+                    "Try food from different neighborhoods"
+                ]
+            },
+            {
+                id: 9,
+                name: "Maldives",
+                location: "Maldives, Indian Ocean",
+                region: "Asia",
+                description: "Tropical paradise with crystal-clear waters, overwater bungalows, pristine beaches, and world-class diving and snorkeling.",
+                price: 300,
+                budget: "luxury",
+                type: "beach",
+                icon: "🏖️",
+                tags: ["Luxury", "Diving", "Romance"],
+                tips: [
+                    "Book overwater villa for ultimate experience",
+                    "Bring underwater camera for snorkeling",
+                    "Try local Maldivian cuisine",
+                    "Respect marine life and coral reefs"
+                ]
+            },
+            {
+                id: 10,
+                name: "Prague",
+                location: "Czech Republic, Europe",
+                region: "Europe",
+                description: "A fairy-tale city with stunning medieval architecture, charming cobblestone streets, and rich cultural heritage.",
+                price: 60,
+                budget: "budget",
+                type: "cultural",
+                icon: "🏰",
+                tags: ["Architecture", "History", "Beer"],
+                tips: [
+                    "Visit Prague Castle early in the morning",
+                    "Try traditional Czech beer and goulash",
+                    "Walk across Charles Bridge at sunrise",
+                    "Explore the Jewish Quarter for historical insights"
+                ]
+            },
+            {
+                id: 11,
+                name: "Swiss Alps",
+                location: "Switzerland, Europe",
+                region: "Europe",
+                description: "Majestic mountain peaks, pristine lakes, charming villages, and world-class skiing and hiking opportunities.",
+                price: 220,
+                budget: "luxury",
+                type: "mountain",
+                icon: "🏔️",
+                tags: ["Skiing", "Hiking", "Scenic Views"],
+                tips: [
+                    "Get a Swiss Travel Pass for trains and cable cars",
+                    "Visit Jungfraujoch - Top of Europe",
+                    "Try Swiss chocolate and cheese fondue",
+                    "Pack layers for changing mountain weather"
+                ]
+            },
+            {
+                id: 12,
+                name: "Thailand",
+                location: "Thailand, Southeast Asia",
+                region: "Asia",
+                description: "Land of smiles offering beautiful beaches, ancient temples, delicious street food, and warm hospitality.",
+                price: 35,
+                budget: "budget",
+                type: "beach",
+                icon: "🛕",
+                tags: ["Street Food", "Temples", "Beaches"],
+                tips: [
+                    "Respect local customs and dress codes at temples",
+                    "Try authentic street food but choose busy stalls",
+                    "Learn basic Thai phrases",
+                    "Visit floating markets early in the morning"
+                ]
+            }
+        ];
+
+        let favorites = JSON.parse(localStorage.getItem('travelFavorites')) || [];
+        let filteredDestinations = [...destinations];
+        let currentDestination = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDestinations();
+            updateFavoritesCount();
+            renderFavorites();
+        });
+
+        // Search functionality
+        function searchDestinations() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const regionFilter = document.getElementById('regionFilter').value;
+            const budgetFilter = document.getElementById('budgetFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+
+            showLoading();
+
+            setTimeout(() => {
+                filteredDestinations = destinations.filter(dest => {
+                    const matchesSearch = dest.name.toLowerCase().includes(searchTerm) ||
+                                        dest.location.toLowerCase().includes(searchTerm) ||
+                                        dest.description.toLowerCase().includes(searchTerm);
+                    
+                    const matchesRegion = !regionFilter || dest.region === regionFilter;
+                    const matchesBudget = !budgetFilter || dest.budget === budgetFilter;
+                    const matchesType = !typeFilter || dest.type === typeFilter;
+
+                    return matchesSearch && matchesRegion && matchesBudget && matchesType;
+                });
+
+                hideLoading();
+                renderDestinations();
+            }, 1000);
+        }
+
+        // Toggle filters
+        function toggleFilters() {
+            const filters = document.getElementById('filters');
+            filters.classList.toggle('active');
+        }
+
+        // Show/hide loading
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('destinationsGrid').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('destinationsGrid').style.display = 'grid';
+        }
+
+        // Render destinations
+        function renderDestinations() {
+            const grid = document.getElementById('destinationsGrid');
+            
+            if (filteredDestinations.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; color: white; padding: 3rem;">
+                        <h3>No destinations found</h3>
+                        <p>Try adjusting your search criteria or filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filteredDestinations.map(dest => `
+                <div class="destination-card" onclick="openModal(${dest.id})">
+                    <div class="card-image" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                        <button class="favorite-btn ${favorites.includes(dest.id) ? 'active' : ''}" 
+                                onclick="event.stopPropagation(); toggleFavorite(${dest.id})">
+                            ${favorites.includes(dest.id) ? '❤️' : '🤍'}
+                        </button>
+                        <span style="position: relative; z-index: 2;">${dest.icon}</span>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${dest.name}</h3>
+                        <p class="card-location">📍 ${dest.location}</p>
+                        <p class="card-description">${dest.description.substring(0, 120)}...</p>
+                        <div class="card-tags">
+                            ${dest.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="card-footer">
+                            <span class="price">$${dest.price}/day</span>
+                            <button class="view-details-btn" onclick="event.stopPropagation(); openModal(${dest.id})">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle favorite
+        function toggleFavorite(id) {
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(id);
+            }
+            
+            localStorage.setItem('travelFavorites', JSON.stringify(favorites));
+            updateFavoritesCount();
+            renderDestinations();
+            renderFavorites();
+        }
+
+        // Update favorites count
+        function updateFavoritesCount() {
+            document.getElementById('favoritesCount').textContent = favorites.length;
+        }
+
+        // Render favorites section
+        function renderFavorites() {
+            const container = document.getElementById('favoritesContainer');
+            const favoriteDestinations = destinations.filter(dest => favorites.includes(dest.id));
+
+            if (favoriteDestinations.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-favorites">
+                        <p>❤️ No favorites yet! Start exploring and save your dream destinations.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="destinations-grid">
+                    ${favoriteDestinations.map(dest => `
+                        <div class="destination-card" onclick="openModal(${dest.id})">
+                            <div class="card-image" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                                <button class="favorite-btn active" 
+                                        onclick="event.stopPropagation(); toggleFavorite(${dest.id})">
+                                    ❤️
+                                </button>
+                                <span style="position: relative; z-index: 2;">${dest.icon}</span>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">${dest.name}</h3>
+                                <p class="card-location">📍 ${dest.location}</p>
+                                <p class="card-description">${dest.description.substring(0, 120)}...</p>
+                                <div class="card-tags">
+                                    ${dest.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                                <div class="card-footer">
+                                    <span class="price">$${dest.price}/day</span>
+                                    <button class="view-details-btn" onclick="event.stopPropagation(); openModal(${dest.id})">
+                                        View Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Open modal
+        function openModal(id) {
+            currentDestination = destinations.find(dest => dest.id === id);
+            if (!currentDestination) return;
+
+            document.getElementById('modalIcon').textContent = currentDestination.icon;
+            document.getElementById('modalTitle').textContent = currentDestination.name;
+            document.getElementById('modalLocation').textContent = `📍 ${currentDestination.location}`;
+            document.getElementById('modalDescription').textContent = currentDestination.description;
+            document.getElementById('modalPrice').textContent = `$${currentDestination.price}/day`;
+            
+            const tipsList = document.getElementById('modalTips');
+            tipsList.innerHTML = currentDestination.tips.map(tip => `<li>${tip}</li>`).join('');
+            
+            const favoriteBtn = document.getElementById('modalFavoriteBtn');
+            favoriteBtn.className = `favorite-btn ${favorites.includes(id) ? 'active' : ''}`;
+            favoriteBtn.textContent = favorites.includes(id) ? '❤️' : '🤍';
+            
+            document.getElementById('destinationModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('destinationModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentDestination = null;
+        }
+
+        // Toggle favorite from modal
+        function toggleFavoriteFromModal() {
+            if (currentDestination) {
+                toggleFavorite(currentDestination.id);
+                
+                const favoriteBtn = document.getElementById('modalFavoriteBtn');
+                favoriteBtn.className = `favorite-btn ${favorites.includes(currentDestination.id) ? 'active' : ''}`;
+                favoriteBtn.textContent = favorites.includes(currentDestination.id) ? '❤️' : '🤍';
+            }
+        }
+
+        // Scroll to favorites
+        function scrollToFavorites() {
+            document.getElementById('favorites').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('destinationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchDestinations();
+            }
+        });
+
+        // Auto-search on filter change
+        document.getElementById('regionFilter').addEventListener('change', searchDestinations);
+        document.getElementById('budgetFilter').addEventListener('change', searchDestinations);
+        document.getElementById('typeFilter').addEventListener('change', searchDestinations);
+    </script>
+</body>
+</html>
